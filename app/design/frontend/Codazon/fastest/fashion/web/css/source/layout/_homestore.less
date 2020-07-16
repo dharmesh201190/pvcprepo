@@ -1,0 +1,70 @@
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+	.page-main .block,
+	.cdz-slideshow{
+		margin-bottom:@space-lg;
+	}
+}
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+	.page-main .block,
+	.cdz-slideshow{
+		margin-bottom:@space-md;
+	}
+}
+
+/*Brand - HomePage*/
+.cdz-brand-slider-wrap{
+	.item-group{
+		border: 1px solid @main_border;
+	}
+	.shop-by-brand-slider.owl-carousel{
+		padding-top: 0;
+		.owl-nav{
+			position:static;
+		}
+		.owl-nav [class*='owl-']{
+			left:0;
+			top: calc(~'50% - 15px');
+			position:absolute;
+			.abs-scale(~'0, 0');
+			.abs-transition();
+			&.owl-next{
+				right:0;
+				left:auto;
+			}
+			.rtl-layout &{
+				left:auto;
+				right:0;
+				&.owl-next{
+					left:0;
+					right:auto;
+				}
+			}
+		}
+		&:hover{
+			.owl-nav [class*='owl-']{
+				.abs-scale(~'1, 1');
+			}
+		}
+		
+	}
+}
+.block-brands .block-content .owl-carousel .owl-nav {
+    top: -65px;
+}
+//Custom
+.home-card {
+    background: white;
+    text-align: center;
+    text-align: -webkit-center;
+    margin-bottom: 20px;
+}
+.column.main .content-top.panel {padding: 40px 0;}
+.row.usps {margin:50px 0;margin-top:0px;}
+.row.usps .col-sm-3 {width:25%;}
+span.usps-label strong {font-weight: 700;}
+.row.usps .col-sm-3 .usps-label {font-weight:normal;letter-spacing:1px;text-transform:uppercase;margin-top: 30px;display: inline-block;}
+.row.usps .usp-icon:before {font-family:'Printvision';font-size:56px;color:#ffffff;background: #003768;border-radius: 50%;border: 20px solid #003768;}
+.row.usps .usp-icon.cus-support:before {content:'\f100';}
+.row.usps .usp-icon.buy-source:before {content:'\f102';}
+.row.usps .usp-icon.est-1996:before {content:'\f101';}
+.row.usps .usp-icon.del-qa:before {content:'\f103';}

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Apptrian
+ * @package   Apptrian_Subcategories
+ * @author    Apptrian
+ * @copyright Copyright (c) 2017 Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <apptrian_subcategories>
+            <general>
+                <enabled>1</enabled>
+            </general>
+            <category_page>
+                <show_after_content>0</show_after_content>
+                <show_before_content>1</show_before_content>
+                <layout>grid</layout>
+                <single_link>0</single_link>
+                <sort_attribute>position</sort_attribute>
+                <sort_direction>asc</sort_direction>
+                <heading>Subcategories</heading>
+                <sort_order>0,1,2</sort_order>
+                <image>image</image>
+                <name>name</name>
+                <description>meta_description</description>
+                <exclude_ids></exclude_ids>
+            </category_page>
+            <home_page>
+                <show_after_content>0</show_after_content>
+                <show_before_content>1</show_before_content>
+                <layout>grid</layout>
+                <single_link>0</single_link>
+                <sort_attribute>position</sort_attribute>
+                <sort_direction>asc</sort_direction>
+                <heading>Subcategories</heading>
+                <sort_order>0,1,2</sort_order>
+                <image>image</image>
+                <name>name</name>
+                <description>meta_description</description>
+                <category_ids></category_ids>
+                <mode>specific</mode>
+            </home_page>
+        </apptrian_subcategories>
+    </default>
+</config>

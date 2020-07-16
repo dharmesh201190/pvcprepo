@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+    <xsl:output method="xml"
+                version="1.0"
+                encoding="UTF-8"
+                indent="yes"/>
+    <xsl:strip-space elements="*"/>
+    <xsl:variable name="attributeSetCode">
+        <xsl:text>Default</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="multiValueSeparator">
+        <xsl:text>,</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="websites">
+        <xsl:text>base</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="product_type">
+        <xsl:text>simple</xsl:text>
+    </xsl:variable>
+    <xsl:template match="Products">
+        <xsl:element name="Items">
+            <xsl:for-each select="Product">
+                <xsl:variable name="config">
+                    <xsl:for-each select="ProductAttributes/ProductAttributeMapping">
+                        <xsl:value-of select="position()"/>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="$config > 1">
+                        <xsl:for-each select="ProductAttributes/ProductAttributeMapping[ProductAttributeName='Type']/ProductAttributeValues/ProductAttributeValue">
+                            <xsl:variable name="type_name">
+                                <xsl:value-of select="Name" />
+                            </xsl:variable>
+                            <xsl:for-each select="../../../../ProductAttributes/ProductAttributeMapping[ProductAttributeName='Color']/ProductAttributeValues/ProductAttributeValue">
+                                <xsl:variable name="color_name">
+                                    <xsl:value-of select="Name" />
+                                </xsl:variable>
+                                <xsl:for-each select="../../../../ProductAttributes/ProductAttributeMapping[ProductAttributeName='Step']/ProductAttributeValues/ProductAttributeValue">
+                                    <xsl:element name="product">
+                                        <xsl:element name="sku">
+                                            <xsl:value-of select="translate(concat(ancestor-or-self::node()/SKU, $color_name, $type_name, Name), '', '-')" />
+                                        </xsl:element>
+                                        <xsl:element name="name">
+                                            <xsl:value-of select="concat(ancestor-or-self::node()/Name, $color_name, $type_name, Name)"/>
+                                        </xsl:element>
+                                        <xsl:element name="description">
+                                            <xsl:value-of select="ancestor-or-self::node()/FullDescription"/>
+                                        </xsl:element>
+                                        <xsl:element name="short_description">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/ShortDescription)"/>
+                                        </xsl:element>
+                                        <xsl:element name="qty">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/StockQuantity)"/>
+                                        </xsl:element>
+                                        <xsl:element name="price">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/Price)"/>
+                                        </xsl:element>
+                                        <xsl:element name="cost">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/ProductCost)"/>
+                                        </xsl:element>
+                                        <xsl:element name="weight">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/Weight)"/>
+                                        </xsl:element>
+                                        <xsl:element name="height">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/Height)"/>
+                                        </xsl:element>
+                                        <xsl:element name="width">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/Width)"/>
+                                        </xsl:element>
+                                        <xsl:element name="length">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/Length)"/>
+                                        </xsl:element>
+                                        <!--Meta Details-->
+                                        <xsl:element name="meta_keywords">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/MetaKeywords)"/>
+                                        </xsl:element>
+                                        <xsl:element name="meta_description">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/MetaDescription)"/>
+                                        </xsl:element>
+                                        <xsl:element name="meta_title">
+                                            <xsl:value-of select="normalize-space(ancestor-or-self::node()/MetaTitle)"/>
+                                        </xsl:element>
+                                        <xsl:element name="attribute_set_code">
+                                            <xsl:value-of select="normalize-space($attributeSetCode)"/>
+                                        </xsl:element>
+                                        <xsl:element name="product_websites">
+                                            <xsl:value-of select="normalize-space($websites)" />
+                                        </xsl:element>
+                                        <xsl:element name="product_type">
+                                            <xsl:value-of select="normalize-space($product_type)" />
+                                        </xsl:element>
+                                        <xsl:element name="group">
+                                            <xsl:value-of select="ancestor-or-self::node()/ProductId"/>
+                                        </xsl:element>
+
+                                        <!--configurable attributes-->
+                                        <xsl:element name="step">
+                                            <xsl:value-of select="normalize-space(Name)"/>
+                                        </xsl:element>
+                                        <xsl:element name="color">
+                                            <xsl:value-of select="normalize-space($color_name)"/>
+                                        </xsl:element>
+                                        <xsl:element name="type">
+                                            <xsl:value-of select="normalize-space($type_name)"/>
+                                        </xsl:element>
+                                    </xsl:element>
+                                </xsl:for-each>
+                            </xsl:for-each>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:element name="product">
+                            <xsl:element name="sku">
+                                <xsl:value-of select="normalize-space(SKU)"/>
+                            </xsl:element>
+                            <xsl:element name="attribute_set_code">
+                                <xsl:value-of select="normalize-space($attributeSetCode)"/>
+                            </xsl:element>
+                            <xsl:element name="product_websites">
+                                <xsl:value-of select="normalize-space($websites)" />
+                            </xsl:element>
+                            <xsl:element name="product_type">
+                                <xsl:value-of select="normalize-space($product_type)" />
+                            </xsl:element>
+                            <xsl:element name="name">
+                                <xsl:value-of select="normalize-space(Name)"/>
+                            </xsl:element>
+                            <xsl:element name="short_description">
+                                <xsl:value-of select="normalize-space(ShortDescription)"/>
+                            </xsl:element>
+                            <xsl:element name="description">
+                                <xsl:value-of select="normalize-space(FullDescription)"/>
+                            </xsl:element>
+                            <xsl:element name="qty">
+                                <xsl:value-of select="normalize-space(StockQuantity)"/>
+                            </xsl:element>
+                            <xsl:element name="price">
+                                <xsl:value-of select="normalize-space(Price)"/>
+                            </xsl:element>
+                            <xsl:element name="cost">
+                                <xsl:value-of select="normalize-space(ProductCost)"/>
+                            </xsl:element>
+                            <xsl:element name="weight">
+                                <xsl:value-of select="normalize-space(Weight)"/>
+                            </xsl:element>
+                            <xsl:element name="height">
+                                <xsl:value-of select="normalize-space(Height)"/>
+                            </xsl:element>
+                            <xsl:element name="width">
+                                <xsl:value-of select="normalize-space(Width)"/>
+                            </xsl:element>
+                            <xsl:element name="length">
+                                <xsl:value-of select="normalize-space(Length)"/>
+                            </xsl:element>
+                            <!--Meta Details-->
+                            <xsl:element name="meta_keywords">
+                                <xsl:value-of select="normalize-space(MetaKeywords)"/>
+                            </xsl:element>
+                            <xsl:element name="meta_description">
+                                <xsl:value-of select="normalize-space(MetaDescription)"/>
+                            </xsl:element>
+                            <xsl:element name="meta_title">
+                                <xsl:value-of select="normalize-space(MetaTitle)"/>
+                            </xsl:element>
+                        </xsl:element>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:element>
+    </xsl:template>
+</xsl:stylesheet>

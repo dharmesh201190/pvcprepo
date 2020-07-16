@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+/**  @var $block \Magento\Checkout\Block\Cart */
+?>
+<div class="cart-empty">
+    <?= $block->getChildHtml('checkout_cart_empty_widget') ?>
+    <h2><?= /* @escapeNotVerified */ __('Oops your cart is empty!') ?></h2>
+    <h4><?php /* @escapeNotVerified */ echo __('Click <a href="%1" class="btn-primary" style="max-width:100px">here</a> to return to our homepage and start shopping.',
+            $block->escapeUrl($block->getContinueShoppingUrl())) ?></h4>
+    <?= $block->getChildHtml('shopping.cart.table.after') ?>
+</div>

@@ -1,0 +1,513 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+?>
+<?php
+$_product = $block->getProduct();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$_callhelper = $this->helper('Magecomp\Hideprice\Helper\Data');
+$priceCurrency = $objectManager->get('\Magento\Framework\Pricing\PriceCurrencyInterface');
+$currencySymbol = $priceCurrency->getCurrency()->getCurrencySymbol();
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$baseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+$scopeConfig = $objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+$lr_helper = $objectManager->create('LR\Serviceupgrade\Helper\Data');
+
+$required = '';
+if ($block->hasRequiredOptions()) {
+    $required = ' data-hasrequired="' . __('* Required Fields') . '"';
+}
+
+?>
+
+<?php
+
+    $_calldata = $_callhelper->getHideprice($_product->getId());
+    
+    /*if(sizeof($_calldata)): ?>
+
+        <a href="<?php echo $this->getUrl($_callhelper->getCmspagelink()); ?>"><button type="button" title="<?php echo $_calldata['button_text']; ?>" class="action tocart primary" ><span>Login or Register to download templates or view prices</span></button></a>
+        <?php
+
+else: */?>
+    <?php if(!sizeof($_calldata)):?>
+    <div class="product-options-wrapper" id="product-options-wrapper"<?= /* @escapeNotVerified */
+    $required ?>>
+        <div class="fieldset" tabindex="0">
+            <?= $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+    <?php endif;?>
+
+
+<?php if ($_product->getCustomMeasurement()) { ?>
+    <?php $a0Width = $scopeConfig->getValue('lr_predefine_size/a0/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a0Height = $scopeConfig->getValue('lr_predefine_size/a0/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a1Width = $scopeConfig->getValue('lr_predefine_size/a1/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a1Height = $scopeConfig->getValue('lr_predefine_size/a1/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a2Width = $scopeConfig->getValue('lr_predefine_size/a2/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a2Height = $scopeConfig->getValue('lr_predefine_size/a2/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a3Width = $scopeConfig->getValue('lr_predefine_size/a3/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a3Height = $scopeConfig->getValue('lr_predefine_size/a3/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a4Width = $scopeConfig->getValue('lr_predefine_size/a4/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a4Height = $scopeConfig->getValue('lr_predefine_size/a4/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a5Width = $scopeConfig->getValue('lr_predefine_size/a5/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a5Height = $scopeConfig->getValue('lr_predefine_size/a5/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a6Width = $scopeConfig->getValue('lr_predefine_size/a6/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a6Height = $scopeConfig->getValue('lr_predefine_size/a6/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a7Width = $scopeConfig->getValue('lr_predefine_size/a7/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a7Height = $scopeConfig->getValue('lr_predefine_size/a7/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a2030Width = $scopeConfig->getValue('lr_predefine_size/a2030/width', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+    <?php $a2030Height = $scopeConfig->getValue('lr_predefine_size/a2030/height', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+
+    <div class="custom-measurement" style="display:none;">
+        <div class="custom-measurement-available"><?php echo $_product->getCustomMeasurement() ? 1 : 0; ?></div>
+        <div class="mesure-height" value="1">1</div>
+        <div class="mesure-width" value="1">1</div>
+        <div class="mesure-focusout" value="meters">meters</div>
+        <div class="mesure-current" value="meters">meters</div>
+        <div class="quantity-val" value="1">1</div>
+        <div class="mesure-calculated-width" value="1">1</div>
+        <div class="mesure-calculated-height" value="1">1</div>
+    </div>
+
+    <div class="calculate-price">
+        <button type="button" title="Calculate Price" class="action primary tocart" id="calulate-price-button">
+            <span><?php echo __("Calculate Price"); ?></span>
+        </button>
+    </div>
+    <?php
+    $flagVar = false;
+    if ($_product->getSku()) { ?>
+        <div id="service-upgrade-section" class="service-upgrade-section" style="display: none;">
+            <div class="service-top-content">
+                <h3 class="service-upgrade-title">
+                    <?php echo __("Turnaround"); ?>
+                </h3>
+                <div class="service-upgrade-description">
+                    <?php echo $scopeConfig->getValue('lr_serviceupgrade/general/editor_textarea', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+                </div>
+            </div>
+            <div class="step-contents">
+            </div>
+        </div>
+        <?php
+    }
+
+    ?>
+    <div class="product-summery" style="display: none;">
+        <div class="title"><?php echo __("Product Summary"); ?></div>
+        <div id="swatch-option-summery"></div>
+    </div>
+    <script>
+        require(['jquery', 'jquery/ui'], function ($) {
+
+            jQuery(".product-info-main").addClass("has-options");
+            jQuery("body").addClass("simple-has-options");
+            jQuery(".price-final_price").hide();
+            jQuery(".box-tocart").hide();
+            jQuery(".actions #product-addtocart-button").attr('disabled', 'disabled');
+            var materialValidationFlag = true;
+
+            $('.product-add-form .field select').each(function (i, obj) {
+                $(obj).find('option:eq(1)').prop('selected', true);
+                var attCode = $(obj).parent('.control').attr('controlid');
+                var attLabel = $(obj).parent('.control').attr('controllabel');
+                var attValue = $(obj).find('option:eq(1)').attr('option-title');
+                var html = '<div class="matrix"><div class="review-label">' + attLabel + '</div>' +
+                    '<div class="review-value ' + attCode + '">' + attValue + '</div></div>';
+                $('#swatch-option-summery').append(html);
+            });
+
+            $('.options-list').each(function () {
+                $(this).children(".choice:first").children('input').prop('checked', true);
+                $(this).children(".choice:first").children('input').addClass("radio-selected");
+                $(this).children(".choice:first").addClass("selected");
+                var attCode = $(this).parent('.control').attr('controlid');
+                var attLabel = $(this).parent('.control').attr('controllabel');
+                var attValue = $(this).children(".choice:first").children(".admin__field-label").children(".option-label").html();
+                var html = '<div class="matrix"><div class="review-label">' + attLabel + '</div>' +
+                    '<div class="review-value ' + attCode + '">' + attValue + '</div></div>';
+                $('#swatch-option-summery').append(html);
+            });
+
+            $('.product-add-form .control input[type=text]').each(function () {
+                $(this).val('1');
+                var attCode = $(this).parent('.control').attr('controlid');
+                var attLabel = $(this).parent('.control').attr('controllabel');
+                var attValue = $(this).val();
+                var html = '<div class="matrix"><div class="review-label">' + attLabel + '</div>' +
+                    '<div class="review-value ' + attCode + '">' + attValue + '</div></div>';
+                $('#swatch-option-summery').append(html);
+            });
+
+
+            function measurementCalculation() {
+                /// Custom Code Start            
+                var measurementAvail = $('.custom-measurement .custom-measurement-available').html();
+                if (measurementAvail == '1') {
+                    var width = $('.custom-measurement .mesure-width').html();
+                    var height = $('.custom-measurement .mesure-height').html();
+                    var measureVal = $('.custom-measurement .mesure-current').html();
+                    var calculatedWidth;
+                    var calculatedHeight;
+                    var measureValueOut = $('.custom-measurement .mesure-focusout').html();
+
+                    /// calculation based on meter
+                    if (measureValueOut == 'meters') {
+                        calculatedWidth = width;
+                        calculatedHeight = height;
+                        if (measureVal.trim() == 'meters') {
+                            $('.field .width').val(width);
+                            $('.field .height').val(height);
+                        } else if (measureVal.trim() == 'cm') {
+                            $('.field .width').val((width / 0.01).toFixed(2));
+                            $('.field .height').val((height / 0.01).toFixed(2));
+                        } else if (measureVal.trim() == 'mm') {
+                            $('.field .width').val((width * 1000).toFixed(2));
+                            $('.field .height').val((height * 1000).toFixed(2));
+                        } else if (measureVal.trim() == 'ft') {
+                            $('.field .width').val((width * 3.29).toFixed(2));
+                            $('.field .height').val((height * 3.29).toFixed(2));
+                        } else if (measureVal.trim() == 'in') {
+                            $('.field .width').val((width * 39.48).toFixed(2));
+                            $('.field .height').val((height * 39.48).toFixed(2));
+                        }
+                    }
+
+                    /// calculation based on cm
+                    if (measureValueOut == 'cm') {
+                        calculatedWidth = (width * 0.01).toFixed(2);
+                        calculatedHeight = (height * 0.01).toFixed(2);
+                        if (measureVal.trim() == 'meters') {
+                            $('.field .width').val((width * 0.01).toFixed(2));
+                            $('.field .height').val((height * 0.01).toFixed(2));
+                        } else if (measureVal.trim() == 'cm') {
+                            $('.field .width').val(width);
+                            $('.field .height').val(height);
+                        } else if (measureVal.trim() == 'mm') {
+                            $('.field .width').val((width * 10).toFixed(2));
+                            $('.field .height').val((height * 10).toFixed(2));
+                        } else if (measureVal.trim() == 'ft') {
+                            $('.field .width').val((width * 0.0328084).toFixed(2));
+                            $('.field .height').val((height * 0.0328084).toFixed(2));
+                        } else if (measureVal.trim() == 'in') {
+                            $('.field .width').val((width * 0.393701).toFixed(2));
+                            $('.field .height').val((height * 0.393701).toFixed(2));
+                        }
+                    }
+
+                    /// calculation based on mm
+                    if (measureValueOut == 'mm') {
+                        calculatedWidth = (width * 0.001).toFixed(2);
+                        calculatedHeight = (height * 0.001).toFixed(2);
+                        if (measureVal.trim() == 'meters') {
+                            $('.field .width').val((width * 0.001).toFixed(2));
+                            $('.field .height').val((height * 0.001).toFixed(2));
+                        } else if (measureVal.trim() == 'cm') {
+                            $('.field .width').val((width / 0.1).toFixed(2));
+                            $('.field .height').val((height / 0.1).toFixed(2));
+                        } else if (measureVal.trim() == 'mm') {
+                            $('.field .width').val(width);
+                            $('.field .height').val(height);
+                        } else if (measureVal.trim() == 'ft') {
+                            $('.field .width').val((width * 0.00328084).toFixed(2));
+                            $('.field .height').val((height * 0.00328084).toFixed(2));
+                        } else if (measureVal.trim() == 'in') {
+                            $('.field .width').val((width * 0.0393701).toFixed(2));
+                            $('.field .height').val((height * 0.0393701).toFixed(2));
+                        }
+                    }
+
+                    /// calculation based on ft
+                    if (measureValueOut == 'ft') {
+                        calculatedWidth = (width * 0.3048).toFixed(2);
+                        calculatedHeight = (height * 0.3048).toFixed(2);
+                        if (measureVal.trim() == 'meters') {
+                            $('.field .width').val((width * 0.3048).toFixed(2));
+                            $('.field .height').val((height * 0.3048).toFixed(2));
+                        } else if (measureVal.trim() == 'cm') {
+                            $('.field .width').val((width / 30.48).toFixed(2));
+                            $('.field .height').val((height / 30.48).toFixed(2));
+                        } else if (measureVal.trim() == 'mm') {
+                            $('.field .width').val((width * 304.8).toFixed(2));
+                            $('.field .height').val((height * 304.8).toFixed(2));
+                        } else if (measureVal.trim() == 'ft') {
+                            $('.field .width').val(width);
+                            $('.field .height').val(height);
+                        } else if (measureVal.trim() == 'in') {
+                            $('.field .width').val((width * 12).toFixed(2));
+                            $('.field .height').val((height * 12).toFixed(2));
+                        }
+                    }
+
+                    /// calculation based on in
+                    if (measureValueOut == 'in') {
+                        calculatedWidth = (width * 0.254).toFixed(2);
+                        calculatedHeight = (height * 0.0254).toFixed(2);
+                        if (measureVal.trim() == 'meters') {
+                            $('.field .width').val((width * 0.254).toFixed(2));
+                            $('.field .height').val((height * 0.0254).toFixed(2));
+                        } else if (measureVal.trim() == 'cm') {
+                            $('.field .width').val((width / 2.54).toFixed(2));
+                            $('.field .height').val((height / 2.54).toFixed(2));
+                        } else if (measureVal.trim() == 'mm') {
+                            $('.field .width').val((width * 25.4).toFixed(2));
+                            $('.field .height').val((height * 25.4).toFixed(2));
+                        } else if (measureVal.trim() == 'ft') {
+                            $('.field .width').val((width * 0.0833333).toFixed(2));
+                            $('.field .height').val((height * 0.0833333).toFixed(2));
+                        } else if (measureVal.trim() == 'in') {
+                            $('.field .width').val(width);
+                            $('.field .height').val(height);
+                        }
+                    }
+
+                    $('.custom-measurement .mesure-calculated-width').html(calculatedWidth);
+                    $('.custom-measurement .mesure-calculated-height').html(calculatedHeight);
+                }
+                /// Custom Code End
+            }
+
+            $('.enter-your-measurements-in input').change(function () {
+                var measurement = $(".enter-your-measurements-in input[type='radio']:checked").siblings('.admin__field-label').children('.option-label').html();
+                var measureVal = measurement.replace(' ', '');
+                $('.custom-measurement .mesure-current').html(measureVal);
+                measurementCalculation();
+            });
+
+
+            $('.field .width').keyup(function () {
+                $('.custom-measurement .mesure-width').html($(this).val());
+                var measurement = $(".enter-your-measurements-in input[type='radio']:checked").siblings('.admin__field-label').children('.option-label').html();
+                var focusOutMeasure = measurement.replace(' ', '');
+                $('.custom-measurement .mesure-focusout').html(focusOutMeasure);
+                measurementCalculation();
+                resetFields();
+            });
+            $('.field .height').keyup(function () {
+                $('.custom-measurement .mesure-height').html($(this).val());
+                var measurement = $(".enter-your-measurements-in input[type='radio']:checked").siblings('.admin__field-label').children('.option-label').html();
+                var focusOutMeasure = measurement.replace(' ', '');
+                $('.custom-measurement .mesure-focusout').html(focusOutMeasure);
+                measurementCalculation();
+                resetFields();
+            });
+
+
+            function setWidthHeight(width, height) {
+                $('.width input').val(width);
+                $('.height input').val(height);
+                $('.custom-measurement .mesure-width').html(width);
+                $('.custom-measurement .mesure-height').html(height);
+                $('.width input, .height input').attr('readonly', 'readonly');
+                $('#swatch-option-summery .matrix .width').html(width);
+                $('#swatch-option-summery .matrix .height').html(height);
+            }
+
+            $('.size-width-x-height select').change(function () {
+                var $optionValue = $(this).find('option:selected').attr('option-value');
+                if ($optionValue != 'customize-size') {
+                    $("#product-options-wrapper .fieldset .enter-your-measurements-in").closest(".field").hide();
+                    $("#product-options-wrapper .fieldset .width").closest(".field").hide();
+                    $("#product-options-wrapper .fieldset .height").closest(".field").hide();
+                    $("#swatch-option-summery .enter-your-measurements-in").closest(".matrix").hide();
+                    $("#swatch-option-summery .width").closest(".matrix").hide();
+                    $("#swatch-option-summery .height").closest(".matrix").hide();
+                }
+                if ($optionValue == 'customize-size') {
+                    $('.width input, .height input').removeAttr("readonly");
+                    $("#product-options-wrapper .fieldset .enter-your-measurements-in").closest(".field").show();
+                    $("#product-options-wrapper .fieldset .width").closest(".field").show();
+                    $("#product-options-wrapper .fieldset .height").closest(".field").show();
+                    $("#swatch-option-summery .enter-your-measurements-in").closest(".matrix").show();
+                    $("#swatch-option-summery .width").closest(".matrix").show();
+                    $("#swatch-option-summery .height").closest(".matrix").show();
+                }
+                if ($optionValue == 'a0') {
+                    setWidthHeight('<?php echo $a0Width; ?>', '<?php echo $a0Height; ?>');
+                }
+                if ($optionValue == 'a1') {
+                    setWidthHeight('<?php echo $a1Width; ?>', '<?php echo $a1Height; ?>');
+                }
+                if ($optionValue == 'a2') {
+                    setWidthHeight('<?php echo $a2Width; ?>', '<?php echo $a2Height; ?>');
+                }
+                if ($optionValue == 'a3') {
+                    setWidthHeight('<?php echo $a3Width; ?>', '<?php echo $a3Height; ?>');
+                }
+                if ($optionValue == 'a4') {
+                    setWidthHeight('<?php echo $a4Width; ?>', '<?php echo $a4Height; ?>');
+                }
+                if ($optionValue == 'a5') {
+                    setWidthHeight('<?php echo $a5Width; ?>', '<?php echo $a5Height; ?>');
+                }
+                if ($optionValue == 'a6') {
+                    setWidthHeight('<?php echo $a6Width; ?>', '<?php echo $a6Height; ?>');
+                }
+                if ($optionValue == 'a7') {
+                    setWidthHeight('<?php echo $a7Width; ?>', '<?php echo $a7Height; ?>');
+                }
+                if ($optionValue == 'a2030') {
+                    setWidthHeight('<?php echo $a2030Width; ?>', '<?php echo $a2030Height; ?>');
+                }
+
+            });
+
+            $('.quantity input').click(function () {
+                var quantity = $(this).parent('.choice').children('.admin__field-label').children('.qty-value').html();
+                $('.custom-measurement .quantity-val').html(quantity);
+            });
+
+
+            $('.options-list input').click(function () {
+                var controlId = $(this).closest('.control').attr('controlid');
+                $('#swatch-option-summery .matrix .' + controlId).html($(this).siblings('.admin__field-label').children('.option-label').html());
+                if (!$(this).hasClass('radio-selected')) {
+                    $(this).closest('.options-list').find('input').removeClass("radio-selected");
+                    $(this).closest('.options-list').find('.selected').removeClass("selected");
+                    $(this).addClass("radio-selected");
+                    $(this).closest('.field').addClass("selected");
+                }
+            });
+
+            $("#product_addtocart_form .control select").change(function () {
+                var controlId = $(this).closest('.control').attr('controlid');
+                //$('#swatch-option-summery .matrix .' + controlId).html($(this).find(":selected").attr('option-title'));
+                $('#swatch-option-summery .matrix .' + controlId).html($(this).find(":selected").text());
+            });
+            jQuery(".field input.width, .field input.height").focusout(function (e) {
+                var attrId = $(this).parent(".control").attr('controlid');
+                $('#swatch-option-summery .matrix .' + attrId).html($(this).val());
+            });
+
+///////Material size validation functionality start
+            $('.material select').on('change', function () {
+                if($( ".size-width-x-height select option:selected" ).text() == "Customize size"){
+                    ajaxMaterialSize();
+                }
+            });
+
+            $('.field .width, .field .height').blur(function () {
+                if($( ".size-width-x-height select option:selected" ).text() == "Customize size"){
+                    ajaxMaterialSize();
+                }
+            });
+
+            function ajaxMaterialSize() {
+                var calculatedWidth = $('.custom-measurement .mesure-calculated-width').html();
+                var calculatedHeight = $('.custom-measurement .mesure-calculated-height').html();
+                var selectedOption = $('.material select option:selected').text();
+
+                if (parseInt(calculatedWidth) > 0 && parseInt(calculatedHeight) > 0 && selectedOption != '-- Please Select --') {
+                    $.ajax({
+                        showLoader: true,
+                        url: '<?php echo $baseUrl . "serviceupgrade/index/materialsize"; ?>',
+                        data: {
+                            calculatedWidth: calculatedWidth,
+                            calculatedHeight: calculatedHeight,
+                            selectedOption: selectedOption,
+                        },
+                        type: "POST",
+                        dataType: 'json'
+                    }).done(function (data) {
+                        if (data.status == "success") {
+                            $(".material-validation-message").html(data.html);
+                            $("#calulate-price-button").attr("disabled", true);
+                            materialValidationFlag = false;
+                        }else{
+                            $("#calulate-price-button").removeAttr("disabled");
+                            $(".material-validation-message").html("");
+                            materialValidationFlag = true;
+                        }
+
+                    });
+                }
+            }
+///////Material size validation functionality end
+
+            function ajaxUpdateService() {
+
+                var priceString = $(".product-options-bottom .price-final_price .price-wrapper .price").html();
+                var currencySymbol = '<?php echo $currencySymbol; ?>';
+                var currentPrice = parseFloat(priceString.replace(currencySymbol, ''));
+                var calculatedWidth = $('.custom-measurement .mesure-calculated-width').html();
+                var calculatedHeight = $('.custom-measurement .mesure-calculated-height').html();
+                var quantityVal = $('.custom-measurement .quantity-val').html();
+
+                var OriginalPrice = ((currentPrice * (calculatedWidth * calculatedHeight)) * quantityVal).toFixed(2);
+
+                $.ajax({
+                    showLoader: true,
+                    url: '<?php echo $baseUrl . "serviceupgrade/index/index"; ?>',
+                    data: {
+                        price: OriginalPrice,
+                        sku: '<?php echo $_product->getSku(); ?>',
+                    },
+                    type: "POST",
+                    dataType: 'json'
+                }).done(function (data) {
+                    if (data.status == "success") {
+                        jQuery(".service-upgrade-section .step-contents").html(data.html);
+                        $(".step-contents input").first().trigger('click');
+                        setTimeout(function () {
+                            if (jQuery("#swatch-option-summery .service-upgrade-matrix").length == 0) {
+                                var attValue = $(".step-contents input").first().attr('shippingLabel');
+                                var htmlService = '<div class="matrix service-upgrade-matrix"><div class="review-label">Turnaround</div>' +
+                                    '<div class="review-value delivery">' + attValue + '</div></div>';
+                                $('#swatch-option-summery').append(htmlService);
+                            }
+                            jQuery(".calculate-price").hide();
+                            jQuery("#service-upgrade-section").show();
+                            jQuery(".product-summery").show();
+                            jQuery(".price-final_price").show();
+                            jQuery(".box-tocart").show();
+                            jQuery(".actions #product-addtocart-button").removeAttr("disabled");
+
+                        }, 250);
+                        jQuery('.service-upgrade-options').on('mouseover mouseout', function (event) {
+                            if (event.type == 'mouseover') {
+                                jQuery(this).addClass("service-onhover");
+                            } else {
+                                jQuery(this).removeClass("service-onhover");
+                            }
+                        });
+                    }
+                });
+            }
+
+            $('#calulate-price-button').click(function () {
+                if(materialValidationFlag){
+                    ajaxUpdateService();
+                }
+            });
+
+            function resetFields() {
+                jQuery(".calculate-price").show();
+                jQuery("#service-upgrade-section").hide();
+                jQuery(".product-summery").hide();
+                jQuery(".price-final_price").hide();
+                jQuery(".box-tocart").hide();
+                jQuery(".actions #product-addtocart-button").attr("disabled", "disabled");
+                jQuery(".calculate-price button span").html("Calculate Price");
+            }
+
+            $('.field .product-custom-option').click(function () {
+                resetFields();
+            });
+
+            jQuery(".step-contents").delegate("input", "click", function () {
+                jQuery(".service-upgrade-options").removeClass("selected-service");
+                jQuery(this).parent('.service-upgrade-options').addClass("selected-service");
+                $('#swatch-option-summery .delivery').html(jQuery(this).attr('shippinglabel'));
+                $('.product-options-bottom .price-final_price .price').html(jQuery(this).attr('price'));
+
+            });
+        });
+    </script>
+<?php } ?>

@@ -1,0 +1,102 @@
+<div id="price-calculator" class="price-calculator">
+	<h2>Price Calculator</h2>
+	<form id="price-calculator-form" name="price-calculator-form" class="price-calculator-form" method="post" data-mage-init='{"validation": {}}' autocomplete="off">
+		<div class="scale">
+			<label>Scale</label></br>
+			<input type="radio" name="scale" value="meter" data-validate="{required:true}"><label>Meter</label>
+			<input type="radio" name="scale" value="centi-meter" data-validate="{required:true}"><label>Centi Meter</label>
+			<input type="radio" name="scale" value="milli-meter" data-validate="{required:true}"><label>Milli Meter</label>
+			<input type="radio" name="scale" value="feet" data-validate="{required:true}"><label>Feet</label>
+			<input type="radio" name="scale" value="inch" data-validate="{required:true}"><label>Inch</label>
+		</div>
+		</br>
+		<div class="width-height-qty">
+			<div class="width" style="width: 7%; display: inline-block;">
+				<label>Width</label>
+				<input type="text" name="width" data-validate="{required:true}">
+			</div>
+			<div class="height" style="width: 7%; display: inline-block;">
+				<label>Height</label>
+				<input type="text" name="height" data-validate="{required:true}">
+			</div>
+			<div class="qty" style="width: 7%; display: inline-block;">
+				<label>Qty</label>
+				<select name="qty">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="more">More</option>
+				</select>
+			</div>
+		</div>
+		</br>
+		<div class="material">
+			<label>Material</label>
+			<select name="material">
+				<optgroup label="Banner-Grade">
+					<option value="1">440gsm PVC</option>
+					<option value="2">340gsm Mesh PVC</option>
+					<option value="14">500gsm PVC</option>
+					<option value="13">740gsm PVC (Single-Sided)</option>
+					<option value="6">740gsm PVC (Double-Sided)</option>
+				</optgroup>
+				<optgroup label="Point-of-Sale">
+					<option value="5">Self-Adhesive Vinyl</option>
+					<option value="21">200gsm Poster Paper</option>
+					<option value="20">400gsm SoFlat (Roller Banner Material)</option>
+					<option value="22">CrystalFlex (Pop-Up Material)</option>
+					<option value="30">Wallpaper (Pastable)</option>
+					<option value="31">Wallpaper (Self-Adhesive)</option>
+				</optgroup>
+				<optgroup label="Rigid">
+					<option value="25">Dibond</option>
+					<option value="15">3mm Foamex</option>
+					<option value="16">5mm Foamex</option>
+					<option value="17">4mm Correx</option>
+					<option value="42">Dibond (Double-Sided)</option>
+					<option value="26">3mm Foamex (Double-Sided)</option>
+					<option value="27">5mm Foamex (Double-Sided)</option>
+					<option value="28">4mm Correx (Double-Sided)</option>
+				</optgroup>
+				<optgroup label="Fabric">
+					<option value="19">Knitted Polyester (Flag Material)</option>
+					<option value="41">Display Polyester</option>
+					<option value="46">Backlit Polyester</option>
+				</optgroup>
+			</select>
+		</div>
+		</br>
+		<div class="finish">
+			<label>Finish</label>
+			<select name="finish">
+				<option value="1">Hems &amp; Eyelets</option>
+				<option value="2">Hems Only</option>
+				<option value="25">Hemmed with Velcro</option>
+				<option value="4">Pole Pocket(s)</option>
+				<option value="3">Trimmed to Size</option>
+				<option value="27">Trimmed with Lamination (Gloss)</option>
+				<option value="26">Trimmed with Lamination (Matt)</option>
+				<option value="31">Trimmed with Lamination (Dry-Wipe)</option>
+				<option value="15">Shape Cut</option>
+				<option value="29">Shape Cut with Lamination (Gloss)</option>
+				<option value="28">Shape Cut with Lamination (Matt)</option>
+				<option value="30">Shape Cut with Lamination (Dry-Wipe)</option>
+				<option value="5">Trimmed with Eyelets</option>
+				<option value="13">Trimmed with Overlap</option>
+				<option value="9">Rope &amp; Toggle</option>
+				<option value="23">Trimmed with Silicone Edging (Kedar)</option>
+			</select>
+		</div>
+		</br>
+		<div class="submit">
+			<input type="submit" name="submit" value="Calculate Price">
+		</div>
+	</form>
+</div>

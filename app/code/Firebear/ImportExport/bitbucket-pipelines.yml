@@ -1,0 +1,41 @@
+image: firebear/magento2
+
+pipelines:
+  default:
+    - step:
+        name: Check codestyle
+        script:
+          - ssh -o StrictHostKeyChecking=No $TESTING_SERVER -p $TESTING_PORT "./check-codestyle.sh $BITBUCKET_BRANCH"
+  branches:
+    master:
+      - parallel:
+        - step:
+            name: Deploy metro (CE 2.2.7)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh metro"
+        - step:
+            name: Deploy quebec (CE 2.2.8)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh quebec"
+        - step:
+            name: Deploy gold (CE 2.3.0)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh gold"
+        - step:
+            name: Deploy kilo (CE 2.3.1)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh kilo"
+    ee:
+      - parallel:
+        - step:
+            name: Deploy delta (EE 2.2.7)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh delta"
+        - step:
+            name: Deploy alpha (EE 2.3.0)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh alpha"
+        - step:
+            name: Deploy uruguay (EE 2.3.1)
+            script:
+              - ssh -o StrictHostKeyChecking=No $DEPLOY_SERVER -p $DEPLOY_PORT "./update-instance.sh uruguay"

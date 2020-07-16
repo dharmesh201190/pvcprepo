@@ -1,0 +1,41 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$baseUrl = $storeManager->getStore()->getBaseUrl();
+
+$catId = 3;
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+
+$allBrands = $alphabet = [];
+foreach ($subCats as $item) {
+    $letter = substr($item->getName(), 0, 1);
+    $allBrands[$letter][$item->getId()] = [
+        'name' => $item->getName(),
+        'url' => $item->getRequestPath()
+    ];
+    $alphabet[$letter] = $letter;
+}
+ksort($alphabet);
+ksort($allBrands);
+?>
+<div class="all-category-list">
+<?php foreach ($allBrands as $letter => $cats) : ?>
+    <div class="category-letter" id="category-<?php echo strtolower($letter) ?>">
+        <div class="big-letter"><?php echo $letter ?></div>
+        <div class="letter-category-wrapper<?php echo (count($cats) <= 9) ? ' col-3' : '' ?>">
+            <?php foreach ($cats as $cat) : ?>
+                <div class="category-item">
+                    <a href="<?php echo $baseUrl.$cat['url'] ?>">
+                        <span><?php echo $cat['name'] ?></span>
+                    </a>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endforeach ?>
+</div>
+
+
+

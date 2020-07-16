@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <tab id="serviceupgrade" translate="label" sortOrder="10">
+            <label>Matrixtable Confuguration</label>
+        </tab>
+        <section id="lr_serviceupgrade" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Turnaround Desctiption</label>
+            <tab>serviceupgrade</tab>
+            <resource>LR_Serviceupgrade::config_serviceupgrade</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Turnaround</label>
+                <field id="editor_textarea" translate="label comment" sortOrder="1" type="editor" showInStore="1" showInDefault="1" >
+                    <label>Turnaround Desctiption</label>
+                    <frontend_model>LR\Serviceupgrade\Block\Adminhtml\System\Config\Editor</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="lr_predefine_size" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Predefine Size</label>
+            <tab>serviceupgrade</tab>
+            <resource>LR_Serviceupgrade::config_serviceupgrade</resource>
+            <group id="a0" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A0 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a1" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A1 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a2" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A2 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+               <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a3" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A3 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a4" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A4 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a5" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A5 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a6" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A6 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a7" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A7 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+            <group id="a2030" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>A2030 Width And Height in Meter</label>
+                <field id="title" translate="Title" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="width" translate="Width" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Width</label>
+                </field>
+                <field id="height" translate="Height" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Height</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

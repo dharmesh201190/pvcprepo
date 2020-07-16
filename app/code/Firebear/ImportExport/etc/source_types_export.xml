@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @copyright: Copyright Â© 2017 Firebear Studio. All rights reserved.
+ * @author   : Firebear Studio <fbeardev@gmail.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="source_types.xsd">
+    <type name="file" label="File" modelInstance="Firebear\ImportExport\Model\Source\Type\File" sortOrder="10">
+        <field name="file_path" id="file_path" label="File Path" type="text" required="true"
+               notice="The file must match the format. Use relative path to Magento installation, e.g. var/import/products.csv (Make sure folder have correct write permissions - 775 , for more details please see Magento 2 Permissions guide)"
+               validation="no-whitespace" component="Firebear_ImportExport/js/form/export-path-file"/>
+        <field name="date_format" id="date_format" value="Y-m-d-hi" label="Date Format" type="text"
+               notice="Date format to attach at end of the file. Enter php date format default is 'Y-m-d-hi'." component="Firebear_ImportExport/js/form/export-path-file"/>
+    </type>
+    <type name="ftp" label="Ftp" modelInstance="Firebear\ImportExport\Model\Source\Type\Ftp" sortOrder="20">
+        <field name="file_path" id="file_path" label="File Path" type="text" required="true"
+               notice="The file must match the format. Use relative path to Magento installation, e.g. var/import/products.csv (Make sure folder have correct write permissions - 775 , for more details please see Magento 2 Permissions guide)"
+               validation="no-whitespace" component="Firebear_ImportExport/js/form/export-path-file"/>
+        <field name="date_format" id="date_format" value="Y-m-d-hi" label="Date Format" type="text"
+               notice="Date format to attach at end of the file. Enter php date format default is 'Y-m-d-hi'." component="Firebear_ImportExport/js/form/export-path-file"/>
+        <field name="host" id="host" label="Host" type="text" required="true"/>
+        <field name="port" id="port" label="Port" type="text" required="true"/>
+        <field name="user" id="username" label="Username" type="text" required="true"/>
+        <field name="password" id="password" label="Password" type="text" required="true"/>
+    </type>
+    <type name="sftp" label="Sftp" modelInstance="Firebear\ImportExport\Model\Source\Type\Sftp" sortOrder="30">
+        <field name="file_path" id="file_path" label="File Path" type="text" required="true"
+               notice="The file must match the format. Use relative path to Magento installation, e.g. var/import/products.csv (Make sure folder have correct write permissions - 775 , for more details please see Magento 2 Permissions guide)"
+               validation="no-whitespace" component="Firebear_ImportExport/js/form/export-path-file"/>
+        <field name="date_format" id="date_format" value="Y-m-d-hi" label="Date Format" type="text"
+               notice="Date format to attach at end of the file. Enter php date format default is 'Y-m-d-hi'."
+               validation="no-whitespace" component="Firebear_ImportExport/js/form/export-path-file"/>
+        <field name="host" id="host" label="Host" type="text" required="true"/>
+        <field name="port" id="port" label="Port" type="text" required="true"/>
+        <field name="username" id="username" label="Username" type="text" required="true"/>
+        <field name="password" id="password" label="Password" type="text" required="true"/>
+    </type>
+    <type name="rest" label="REST API" modelInstance="Firebear\ImportExport\Model\Source\Type\Rest"
+          exists="\RestClient" sortOrder="70" depends="json,xml" api="1">
+        <field name="request_url" id="request_url" label="API Call URL" type="text"
+               required="true" notice="API Call URL" validation="no-whitespace url2"/>
+        <field name="request_method" id="request_method"
+               label="Request Method" type="text" required="true" formElement="select"
+               component="Firebear_ImportExport/js/form/export-rest-select"
+               options="Firebear\ImportExport\Model\ExportJob\Source\RestMethod"
+               source_options="Firebear\ImportExport\Model\ExportJob\Source\RestMethod"
+        />
+        <field name="request_options" id="request_options"
+               label="JSON Options" type="text" required="true" notice="JSON Options"
+               validation="validate-no-empty required-entry"
+               component="Firebear_ImportExport/js/form/export-rest-textarea"/>
+        <field name="request_body" id="request_body" label="JSON Body Request"
+               type="text" required="false" notice="JSON Body Request"
+               component="Firebear_ImportExport/js/form/export-rest-textarea"/>
+    </type>
+</config>

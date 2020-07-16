@@ -1,0 +1,391 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+//"swatchRenderer": {
+
+?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$registery = $objectManager->get('\Magento\Framework\Registry');
+$currentProduct = $registery->registry('current_product');
+$priceCurrency = $objectManager->get('\Magento\Framework\Pricing\PriceCurrencyInterface');
+$currencySymbol = $priceCurrency->getCurrency()->getCurrencySymbol();
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$baseUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+$scopeConfig = $objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+$lr_helper = $objectManager->create('LR\Serviceupgrade\Helper\Data');
+$childproducts = array();
+if($currentProduct){
+    $_children = $currentProduct->getTypeInstance()->getUsedProducts($currentProduct);
+    foreach ($_children as $child){
+        $childproducts[$child->getId()] = $child->getSku();
+    }
+}
+?>
+<?php /** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */ ?>
+<div class="swatch-opt overwrite-custom" data-role="swatch-options"></div>
+<?php
+$flagVar = false;
+if ($currentProduct->getSku()) {
+    $Serviceupgrade = $objectManager->create('LR\Serviceupgrade\Model\ResourceModel\Serviceupgrade\Collection');
+    $Serviceupgrade->addFieldToFilter('sku', $currentProduct->getSku());
+
+    if (count($Serviceupgrade) == 0) {
+        $Serviceupgrade = $objectManager->create('LR\Serviceupgrade\Model\ResourceModel\Serviceupgrade\Collection');
+        $Serviceupgrade->addFieldToFilter('range_min_price', array('lteq' => $currentProduct->getFinalPrice()));
+        $Serviceupgrade->addFieldToFilter('range_max_price', array('gteq' => $currentProduct->getFinalPrice()));
+        $flagVar = true;
+    }
+
+    if (count($Serviceupgrade)) {
+        $holidays = $objectManager->create('LR\Serviceupgrade\Model\ResourceModel\Holiday\Collection');
+        $currentdate = strtotime(date('Y-m-d'));
+
+        ?>
+        <div id="service-upgrade-section" class="service-upgrade-section swatch-attribute">
+            <div class="service-top-content">
+                <h3 class="service-upgrade-title">
+                    <?php echo __("Turnaround"); ?>
+                </h3>
+            </div>
+            <div class="custom-opt-class" id="attribute_turnaround">
+                <div class="service-upgrade-description">
+                    <?php echo $scopeConfig->getValue('lr_serviceupgrade/general/editor_textarea', \Magento\Store\Model\ScopeInterface::SCOPE_STORE); ?>
+                </div>
+                <div class="step-contents">
+                <?php foreach ($Serviceupgrade as $serviceData) { ?>
+                    <?php
+                    if ($flagVar) {
+                        if ($serviceData->getSku() != '') {
+                            continue;
+                        }
+                    }
+
+                    ?>
+
+                    <div class="service-upgrade-options <?php
+                    if ($serviceData->getRecommended()) {
+                        echo "recommended";
+                    }
+
+                    ?>">
+                             <?php
+                             $shippingdays = $serviceData->getShippingDays();
+                             $deliverydate = strtotime("+" . $shippingdays . " days", $currentdate);
+                             if ($holidays->count() > 0 && $shippingdays > 0) {
+                                 foreach ($holidays as $key => $value) {
+                                     $holiday_date = strtotime($value['date']);
+                                     if ($currentdate <= $holiday_date && $holiday_date <= $deliverydate && Date('D', $holiday_date) != 'Sun' && Date('D', $holiday_date) != 'Sat') {
+                                         $shippingdays += 1;
+                                     }
+                                 }
+                             }
+                             $weekenddays = $lr_helper->countWeekendDays($currentdate, strtotime("+" . $shippingdays . " days", $currentdate));
+                             $shippingdays += $weekenddays;
+                             $day = Date("D", strtotime("+" . $shippingdays . " days", $currentdate));
+                             if ($day == 'Sat') {
+                                 $shippingdays += 2;
+                             } else if ($day == 'San') {
+                                 $shippingdays += 2;
+                             }
+
+                             $calculatedPrice = ($currentProduct->getFinalPrice() * $serviceData->getShippingPricePercent()) / 100;
+                             $finalPrice = $currentProduct->getFinalPrice() + $calculatedPrice;
+                             $formattedCurrencyValue = $priceHelper->currency($finalPrice, true, false);
+                             $formatedCalculatedPrice = $priceHelper->currency($calculatedPrice, true, false);
+                             $shippinglabel = str_replace('{{days}}', $shippingdays, $serviceData->getShippingLable());
+
+                             ?>
+                        <input type="radio" class="radio required-entry" shippingLabel="<?php echo $shippinglabel; ?>" percent="<?php echo $serviceData->getShippingPricePercent(); ?>" price="<?php echo $formattedCurrencyValue; ?>" name="delivery" data-validate="{'validate-one-required-by-name':true}" value='{ "lable": "<?php echo $shippinglabel; ?>", "price": "<?php echo $finalPrice; ?>"}'>
+                        <div class="service-opt-title">
+                            <?php if ($shippingdays > 0) { ?>
+                                <div style="font-size:12px;">Delivery Date : <?php echo date('d F, Y', strtotime("+" . $shippingdays . " days")); ?></div>
+                            <?php } ?>
+                            <div><?php echo $shippinglabel; ?></div>
+                        </div>
+                        <div class="service-opt-percent"><?php echo $formatedCalculatedPrice; ?></div>
+                    </div>
+                <?php } ?>
+                </div>
+                <div for="attribute_turnaround_error" id="attribute_turnaround_error">This is a required field.</div>
+            </div>    
+        </div>
+        <?php
+    }
+}
+
+?>
+<div class="product-summery">
+    <div id="swatch-option-summery"></div>
+    <div class="attachments">
+        <?php
+            echo $block->getLayout()->createBlock('Prince\Productattach\Block\Attachment')->setProductId($currentProduct->getId())->setTemplate('Prince_Productattach::attachment_all.phtml')->toHtml();
+        ?>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+    "[data-role=swatch-options]": {
+    "Magento_Swatches/js/swatch-renderer": {
+    "jsonConfig": <?= /* @escapeNotVerified */ $swatchOptions = $block->getJsonConfig() ?>,
+    "jsonSwatchConfig": <?php /* @noEscape */ echo $block->getJsonSwatchConfig(); ?>,
+    "mediaCallback": "<?= /* @escapeNotVerified */ $block->getMediaCallback() ?>",
+    "gallerySwitchStrategy": "<?php /* @escapeNotVerified */ echo $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') ?: 'replace';
+
+?>"
+    },
+    "Magento_Swatches/js/configurable-customer-data": {
+    "swatchOptions": <?php /* @noEscape */ echo $swatchOptions ?>
+    }
+    }
+    }
+</script>
+<script type="text/javascript">
+    require([
+        'jquery','underscore'
+    ], function ($,_) {
+
+        function updateSummary(){
+            $('#swatch-option-summery').append("<div class='title'><?php echo __('Product Summary'); ?></div>");
+            $('.swatch-attribute').each(function () {
+                    var attCode = $(this).attr("attribute-code");
+                    var attLabel = $("." + attCode + " .swatch-attribute-label").html();
+                    var attValue = $("." + attCode + " .swatch-attribute-options .selected").attr('option-label');
+                    if(attValue==undefined){
+                        attValue = '';
+                    }
+                    if(attLabel== undefined){
+                        return;
+                    }
+                    var attid = $("." + attCode + " .swatch-attribute-options .selected").attr('option-label');
+                    var html = '<div class="matrix"><div class="review-label">' + attLabel + '</div>' +
+                            '<div class="review-value ' + attCode + '">' + attValue + '</div></div>';
+                    $('#swatch-option-summery').append(html);
+            });
+        }
+
+        jQuery(document).ready(function () {
+            setTimeout(function () {
+                if (jQuery(".swatch-attribute").length > 0) {
+                    jQuery(".product-info-main").addClass("has-options");
+                }
+                updateSummary();
+                jQuery('.swatch-attribute .custom-opt-class').each(function(i,value){
+                    if(i==0){
+                        jQuery(this).show();
+                    }
+                });
+            }, 4000);
+            //$('.swatch-opt.overwrite-custom:first .swatch-attribute .custom-opt-class').show();
+        });
+        jQuery(".overwrite-custom").click(function (e) {
+            var classString = e.target.className;
+            if(classString.toLowerCase().indexOf("optselected") >= 0 ){
+                $(e.target).parent().find('.swatch-option.selected').trigger('click');
+            }
+            if (classString.toLowerCase().indexOf("swatch-option") >= 0 || classString.toLowerCase().indexOf("swatch-qty-price") >= 0) {
+                var dataid = $(e.target).parent().parent().parent().next().find('.custom-opt-class').attr('data-id');
+                if(classString.toLowerCase().indexOf("print_qty") >= 0 || classString.toLowerCase().indexOf("swatch-qty-price") >= 0){
+                    dataid = 'turnaround';
+                }
+                if(dataid){
+                    var qtyselected = false;
+                    if(classString.toLowerCase().indexOf("swatch-qty-price") >= 0){
+                        var qtyfieldclass = $(e.target).parent().attr('class');
+                        if(qtyfieldclass.indexOf("selected") >= 0){
+                            qtyselected = true;
+                        }
+                    }
+                    if(classString.toLowerCase().indexOf("selected") >= 0 || qtyselected){
+                        jQuery('#attribute_'+dataid).slideDown();
+                        if(jQuery('#attribute_'+dataid).length){
+                            var topposition = jQuery('#attribute_'+dataid).offset().top;
+                            var paddingspace = 100;
+                            if(jQuery(window).width() > 768 ){
+                                paddingspace = 250;
+                            }
+                            jQuery('html, body').animate({
+                                scrollTop: (topposition-paddingspace)
+                            }, 600);
+                        }
+                        $(e.target).parent().parent().parent().addClass('optionactive');
+                    } else {
+                        $(e.target).parent().parent().parent().removeClass('optionactive');
+                        var allelements = $(e.target).parent().parent().parent().nextAll();
+                        $(allelements).each(function (i) {
+                            $(this).removeClass('optionactive');
+                            $(this).find('.swatch-option.selected').trigger('click');
+                            var attrid = $(this).attr('attribute-id');
+                            $('#attribute_'+attrid).slideUp();
+                        });
+                        $('.service-upgrade-options.selected-service').removeClass('selected-service');
+                        $('#attribute_turnaround').slideUp();
+                        $('#swatch-option-summery').html('');
+                        updateSummary();
+                    }
+                } else {
+                    if(classString.toLowerCase().indexOf("selected") < 0){
+                        //remove turnaroound selection
+                        $('.service-upgrade-options.selected-service').removeClass('selected-service');
+                        $('#attribute_turnaround').slideUp();
+                        $('#swatch-option-summery').html('');
+                        updateSummary();
+                    }
+                }
+                    
+                var currSymbol = '<?php echo $currencySymbol; ?>';
+                priceString = jQuery(".print_qty .swatch-attribute-options .selected .swatch-qty-price").html();
+                if (priceString) {
+
+                    var selected_options = {};
+                    jQuery('div.swatch-attribute').each(function(k,v){
+                        var attribute_id    = jQuery(v).attr('attribute-id');
+                        var option_selected = jQuery(v).attr('option-selected');
+                        //console.log(attribute_id, option_selected);
+                        if(!attribute_id || !option_selected){ return;}
+                        selected_options[attribute_id] = option_selected;
+                    });
+
+                    var product_id_index = jQuery('[data-role=swatch-options]').data('mageSwatchRenderer').options.jsonConfig.index;
+                    var found_ids = [];
+                    jQuery.each(product_id_index, function(product_id,attributes){
+                        var productIsSelected = function(attributes, selected_options){
+                            return _.isEqual(attributes, selected_options);
+                        }
+                        if(productIsSelected(attributes, selected_options)){
+                            found_ids.push(product_id);
+                        } 
+                    });
+                    if(typeof found_ids[0] != undefined){
+
+                        var childproducts = '<?php echo json_encode($childproducts);?>';
+                        childproductids = JSON.parse(childproducts);
+                        jQuery.each(childproductids, function(i,val){
+                            if(found_ids[0] == i && val !='' ){
+                                jQuery('[itemprop="sku"]').text(val);
+                            }
+                        });
+                    }
+
+
+
+                    var currentPrice = parseInt(priceString.replace(currSymbol, ''));
+                    $.ajax({
+                        showLoader: true,
+                        url: '<?php echo $baseUrl . "serviceupgrade/index/index"; ?>',
+                        data: {
+                            price: currentPrice,
+                            sku: '<?php echo $currentProduct->getSku(); ?>',
+                            selectedvalues: jQuery('#product_addtocart_form').serialize(),
+                        },
+                        type: "POST",
+                        dataType: 'json'
+                    }).done(function (data) {
+                        if (data.status == "success") {
+                            jQuery(".service-upgrade-section .step-contents").html(data.html);
+                            //$(".step-contents input").first().trigger('click');
+                            setTimeout(function () {
+                                if (jQuery("#swatch-option-summery .service-upgrade-matrix").length == 0) {
+                                    var attValue = '';//$(".step-contents input").first().attr('shippingLabel');
+                                    var htmlService = '<div class="matrix service-upgrade-matrix"><div class="review-label">Turnaround</div>' +
+                                            '<div class="review-value delivery">' + attValue + '</div></div>';
+                                    $('#swatch-option-summery').append(htmlService);
+                                }
+                            }, 500);
+                            if(data.attachment !=''){
+                                jQuery('.product-options-wrapper .attachments').replaceWith(data.attachment);
+                            }
+                            jQuery('.service-upgrade-options').on('mouseover mouseout', function (event) {
+                                if (event.type == 'mouseover') {
+                                    jQuery(this).addClass("service-onhover");
+                                } else {
+                                    jQuery(this).removeClass("service-onhover");
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+        jQuery(".step-contents").delegate("input", "click", function () {
+            jQuery(".service-upgrade-options").removeClass("selected-service");
+            jQuery(this).parent('.service-upgrade-options').addClass("selected-service");
+            $('#swatch-option-summery .delivery').html(jQuery(this).attr('shippinglabel'));
+            $('.product-options-bottom .price-final_price .price').html(jQuery(this).attr('price'));
+        });
+        jQuery('#product-addtocart-button').click(function(){
+            if(jQuery('.service-upgrade-options.selected-service').length == 0){
+                jQuery('#attribute_turnaround_error').css('display','block');
+            } else {
+                jQuery('#attribute_turnaround_error').css('display','none');
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    .swatch-attribute .custom-opt-class{display: none;}
+    .swatch-attribute.optionactive .optselected{display: block !important;}
+    .overwrite-custom .swatch-attribute{position: relative;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;} 
+    .service-upgrade-description{margin-top: 10px;}
+    .service-upgrade-title{margin-bottom: 0px !important;}
+    .swatch-attribute.optionactive {
+ border: 1px solid #4ca25d;
+}
+.swatch-attribute .optselected:before {
+ content: "";
+ height: 35px;
+ width: 35px;
+ border-color: transparent #4ca25d transparent transparent;
+ border-style: solid;
+ border-width: 0 38px 38px 0;
+ position: absolute;
+ top: -15px;
+ right: -30px;
+}
+.swatch-attribute .optselected:after {
+ content: "\f00c";
+ font-family: fontAwesome;
+ background: transparent;
+ color: #f2f2f2;
+ display: block;
+ background-size: 100% auto;
+ background-repeat: no-repeat;
+ position: absolute;
+ top: -10px;
+ right: -25px;
+ background-position: center;
+}
+.swatch-attribute .optselected {
+ display: none;
+ position: absolute;
+ top: 15px;
+ right: 30px;
+ text-decoration: none;
+ color: #ca0000;
+ background: #f2f2f2;
+ padding: 5px;
+ letter-spacing: 1px;
+ cursor: pointer;
+}
+.swatch-attribute .optselected:hover:after {
+ content: '\f00d';
+}
+.swatch-attribute .optselected:hover:before {
+ border-color:transparent #c30000 transparent transparent;
+}
+#attribute_turnaround_error{display: none;color:#e02b27;}
+.catalog-product-view .product-add-form{clear: both;}
+.product-info-main .page-title-wrapper {
+    float: right;
+    width: 38%;
+}
+@media (min-width: 768px){
+    .page-layout-1column .product.media {width: 60%;float: left;}
+}
+.product-info-main .product-reviews-summary { float: right; clear: inherit; display: block;}
+</style>

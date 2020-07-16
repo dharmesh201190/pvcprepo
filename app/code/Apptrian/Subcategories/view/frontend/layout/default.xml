@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Apptrian
+ * @package   Apptrian_Subcategories
+ * @author    Apptrian
+ * @copyright Copyright (c) 2017 Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!--<css src="Apptrian_Subcategories::css/apptrian_subcategories.css" media="all"/>-->
+    </head>
+</page>

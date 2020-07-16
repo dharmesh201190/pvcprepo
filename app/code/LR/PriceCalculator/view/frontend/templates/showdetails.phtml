@@ -1,0 +1,24 @@
+<?php $params = $block->getParams(); ?>
+
+<div id="price-calculation" class="price-calculation">
+	<h2>Price Calculation </h2>
+	<p><span class="label">Price:</span> <?php echo $params['price']; ?> </p>
+	<p><span class="label">Scale:</span> <?php echo $params['scale']; ?></p>
+	<p><span class="label">Width:</span> <?php echo $params['width']; ?></p>
+	<p><span class="label">Height:</span> <?php echo $params['height']; ?></p>
+	<p><span class="label">Material:</span> <?php echo $params['material']; ?></p>
+	<p><span class="label">Finish:</span> <?php echo $params['finish']; ?></p>
+
+	<form id="price-calculation-form" name="price-calculation-form" class="price-calculation-form" method="post" action="<?php echo $block->getUrl('pricecalculator/calculateprice/productaddtocart'); ?>">
+		<input type="hidden" name="price" value="<?php echo $params['price']; ?>" />
+		<input type="hidden" name="qty" value="<?php echo $params['qty']; ?>" />
+		<input type="hidden" name="scale" value="<?php echo $params['scale']; ?>" />
+		<input type="hidden" name="width" value="<?php echo $params['width']; ?>"/>
+		<input type="hidden" name="height" value="<?php echo $params['height']; ?>"/>
+		<input type="hidden" name="material" value="<?php echo $params['material']; ?>"/>
+		<input type="hidden" name="finish" value="<?php echo $params['finish']; ?>"/>
+		<div class="submit">
+			<input class="action primary" type="submit" name="submit" value="Add To Cart">
+		</div>
+	</form>
+</div>

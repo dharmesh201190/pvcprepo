@@ -1,0 +1,114 @@
+<?php
+/**
+ * @category  Apptrian
+ * @package   Apptrian_Subcategories
+ * @author    Apptrian
+ * @copyright Copyright (c) 2017 Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Subcategories block
+ *
+ * @var $block \Apptrian\Subcategories\Block\GridList
+ */
+
+    $data       = $block->getSubcategoriesData();
+    $categories = $data['categories'];
+    $options    = $data['options'];
+    $elements   = $options['sort_order'];
+    $heading    = $options['heading'];
+    $singleLink = $options['single_link'];
+    
+?>
+
+<?php if ($options['enabled']): ?>
+<?php if (count($categories) > 0): ?>
+<?php if ($heading): ?>
+<h3 class="apptrian-subcategories-heading"><?php echo $heading ?></h3>
+<?php endif; ?>
+<ul class="apptrian-subcategories-<?php echo $options['layout'] ?>"><?php foreach ($categories as $c): ?><li class="apptrian-subcategories-category-wrapper"><?php
+
+// Above line with opening <ul> tag and below line with closing </ul> tag must be written like this so there are no spaces between <li> tags.
+
+$info        = '';
+$name        = $c['name'];
+$image       = $c['image'];
+$description = $c['description'];
+$url         = $c['url'];
+
+if ($singleLink) {
+    
+    $info .= '<a class="apptrian-subcategories-category" href="' . $url . '">'; 
+  
+    foreach ($elements as $el) {
+        switch ($el) {
+            case 'name':
+                if ($name) {
+                    $info .= '<div class="apptrian-subcategories-category-name"><span>' . $name . '</span></div>';
+                }
+                break;
+            case 'image':
+                $info .= '<div class="apptrian-subcategories-category-image"><img src="' . $image . '" alt="' . $name . '"/></div>';
+                break;
+            case 'description':
+                if ($description) {
+                    // If description attribute
+                    if ($options['description'] == 'description') {
+                        $info .= '<div class="apptrian-subcategories-category-description">' . $description . '</div>';
+                    // If meta_description attribute
+                    } else {
+                        $info .= '<div class="apptrian-subcategories-category-description"><span>' . $description . '</span></div>';
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    $info .= '</a>';
+    
+} else {
+    
+    $info .= '<div class="apptrian-subcategories-category">';   
+  
+    foreach ($elements as $el) {
+        switch ($el) {
+            case 'name':
+                if ($name) {
+                    $info .= '<div class="apptrian-subcategories-category-name"><a href="' . $url . '"><span>' . $name . '</span></a></div>';
+                }
+                break;
+            case 'image':
+                $info .= '<div class="apptrian-subcategories-category-image"><a href="' . $url . '"><img src="' . $image . '" alt="' . $name . '"/></a></div>';
+                break;
+            case 'description':
+                if ($description) {
+                    // If description attribute
+                    if ($options['description'] == 'description') {
+                        $info .= '<div class="apptrian-subcategories-category-description">' . $description . '</div>';
+                    // If meta_description attribute
+                    } else {
+                        $info .= '<div class="apptrian-subcategories-category-description"><span>' . $description . '</span></div>';
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    $info .= '</div>'; 
+}
+    
+echo $info;
+
+?></li><?php endforeach; ?></ul>
+
+<?php endif; ?>
+<?php endif; ?>

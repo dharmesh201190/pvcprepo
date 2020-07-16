@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<virtualType name="LRPriceCalculatorGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+		<arguments>
+			<argument name="appliers" xsi:type="array">
+				<item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+				<item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+			</argument>
+		</arguments>
+	</virtualType>
+	<virtualType name="LRPriceCalculatorGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+		<arguments>
+			<argument name="collection" xsi:type="object" shared="false">LR\PriceCalculator\Model\ResourceModel\PriceCalculator\Collection</argument>
+			<argument name="filterPool" xsi:type="object" shared="false">LRPriceCalculatorGridFilterPool</argument>
+		</arguments>
+	</virtualType>
+	<virtualType name="LR\PriceCalculator\Model\ResourceModel\PriceCalculator\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">lr_pricecalculator</argument>
+			<argument name="resourceModel" xsi:type="string">LR\PriceCalculator\Model\ResourceModel\PriceCalculator</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="lr_pricecalculator_index_listing_data_source" xsi:type="string">LR\PriceCalculator\Model\ResourceModel\PriceCalculator\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

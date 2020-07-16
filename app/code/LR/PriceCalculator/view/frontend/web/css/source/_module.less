@@ -1,0 +1,71 @@
+.price-calculation,
+.price-calculator {
+    margin: 0 auto;
+    padding: 15px;
+    box-shadow: 0px 1px 3px 1px #d0d0d0;
+    h2 {
+        text-align: center;
+    }
+	.submit {
+		text-align: center;
+	}
+}
+.price-calculator {
+	max-width: 395px;
+	.field {
+	    margin-bottom: 20px;
+	    > label,
+	    .size-field > label {
+    	    font-weight: 600;
+		    margin-bottom: 5px;
+		    display: block;
+	    }
+	    &.scale {
+    		.control {
+	    	    display: flex;
+    	        flex-wrap: wrap;
+	    		align-items: center;
+	    		label:not(:last-child) {
+				    margin-right: 10px;
+	    		}
+    		}
+	    }
+	    &.width-height-qty {
+    	    display: flex;
+    	    .size-field {
+	    	    &:not(:last-child) {
+				    margin-right: 20px;
+				}
+				.control {
+				    position: relative;
+    				display: flex;
+    				input {
+					    width: ~'calc(100% - 40px)';
+    					border-radius: 0;
+    				}
+    				span {
+					    width: 40px;
+					    display: block;
+					    background: #f2f2f2;
+					    border: 1px solid #e1e1e1;
+					    border-left: none;
+					    text-align: center;
+					    line-height: 35px;
+					    font-weight: 600;
+    				}
+				}
+			}
+	    }
+	}
+}
+.price-calculation {
+	max-width: 350px;
+	.label {
+		font-weight: 600;
+	    margin-bottom: 5px;
+	    display: inline-block;
+	}
+	#price-calculation-form {
+	    margin-top: 20px;
+	}
+}

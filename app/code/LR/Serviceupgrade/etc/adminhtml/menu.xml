@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="LR_Serviceupgrade::Base" title="Production Turnaround" module="LR_Serviceupgrade" resource="LR_Serviceupgrade::serviceupgrade" sortOrder="20"/>
+        <add id="LR_Serviceupgrade::request" title="Manage Turnarounds" module="LR_Serviceupgrade" resource="LR_Serviceupgrade::serviceupgrade" parent="LR_Serviceupgrade::Base" sortOrder="1" action="serviceupgrade/serviceupgrade/index" />
+        <add id="LR_Serviceupgrade::holiday" title="Production Holidays" module="LR_Serviceupgrade" resource="LR_Serviceupgrade::holiday" parent="LR_Serviceupgrade::Base" sortOrder="1" action="serviceupgrade/holidays/index" />
+        <add id="LR_Serviceupgrade::materialtype" title="Material Type" module="LR_Serviceupgrade" resource="LR_Serviceupgrade::materialtype" parent="LR_Serviceupgrade::Base" sortOrder="1" action="serviceupgrade/materialtype/index" />
+    </menu>
+</config>

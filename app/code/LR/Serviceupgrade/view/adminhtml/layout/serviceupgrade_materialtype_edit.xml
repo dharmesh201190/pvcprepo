@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceBlock name="page.main.title">
+           <action method="setPageTitle">
+              <argument translate="true" name="title" xsi:type="string">Materialtype</argument>
+           </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="LR\Serviceupgrade\Block\Adminhtml\Materialtype\Edit" name="serviceupgrade_materialtype_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="LR\Serviceupgrade\Block\Adminhtml\Materialtype\Edit\Tabs" name="serviceupgrade_materialtype_edit_tabs">
+                <block class="LR\Serviceupgrade\Block\Adminhtml\Materialtype\Edit\Tab\Materialtype" name="serviceupgrade_materialtype_edit_tab_materialtype"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">materialtype</argument>
+                    <argument name="block" xsi:type="string">serviceupgrade_materialtype_edit_tab_materialtype</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

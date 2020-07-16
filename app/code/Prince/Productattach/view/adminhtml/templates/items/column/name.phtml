@@ -1,0 +1,99 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @see \Magento\Sales\Block\Adminhtml\Items\Column\Name
+ */
+?>
+
+<?php if ($_item = $block->getItem()): ?>
+    <div id="order_item_<?= /* @escapeNotVerified */ $_item->getId() ?>_title"
+         class="product-title">
+        <?= $block->escapeHtml($_item->getName()) ?>
+    </div>
+
+    <div class="product-sku-block">
+        <span><?= /* @escapeNotVerified */ __('SKU') ?>:</span> <?= implode('<br />', $this->helper('Magento\Catalog\Helper\Data')->splitSku($block->escapeHtml($block->getSku()))) ?>
+    </div>
+
+    <?php if ($block->getOrderOptions()): ?>
+        <dl class="item-options">
+            <?php foreach ($block->getOrderOptions() as $_option): ?>
+                <dt><?= /* @escapeNotVerified */ $_option['label'] ?>:</dt>
+                <dd>
+                    <?php if (isset($_option['custom_view']) && $_option['custom_view']): ?>
+                        <?= /* @escapeNotVerified */ $block->getCustomizedOptionValue($_option) ?>
+                    <?php else: ?>
+                        <?php $_option = $block->getFormattedOption($_option['value']); ?>
+                        <?= /* @escapeNotVerified */ $_option['value'] ?><?php if (isset($_option['remainder']) && $_option['remainder']): ?><span id="<?= /* @escapeNotVerified */ $_dots = 'dots' . uniqid() ?>"> ...</span><span id="<?= /* @escapeNotVerified */ $_id = 'id' . uniqid() ?>"><?= /* @escapeNotVerified */ $_option['remainder'] ?></span>
+                            <script>
+                                require(['prototype'], function() {
+                                    $('<?= /* @escapeNotVerified */ $_id ?>').hide();
+                                    $('<?= /* @escapeNotVerified */ $_id ?>').up().observe('mouseover', function(){$('<?= /* @escapeNotVerified */ $_id ?>').show();});
+                                    $('<?= /* @escapeNotVerified */ $_id ?>').up().observe('mouseover', function(){$('<?= /* @escapeNotVerified */ $_dots ?>').hide();});
+                                    $('<?= /* @escapeNotVerified */ $_id ?>').up().observe('mouseout',  function(){$('<?= /* @escapeNotVerified */ $_id ?>').hide();});
+                                    $('<?= /* @escapeNotVerified */ $_id ?>').up().observe('mouseout',  function(){$('<?= /* @escapeNotVerified */ $_dots ?>').show();});
+                                });
+                            </script>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </dd>
+            <?php endforeach; ?>
+        </dl>
+    <?php endif; ?>
+    <?= $block->escapeHtml($_item->getDescription()) ?>
+
+    <?php //// Product Attachement code start ?>
+
+        <?php
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $productAttachment = $objectManager->get('Prince\Productattach\Block\Attachment'); 
+        $productId = $objectManager->get('Magento\Catalog\Model\Product')->getIdBySku($block->getSku());
+
+        ?>
+
+        <div class="attachments">
+            <?php if($productAttachment->isEnable()): ?>                                
+                <?php $attachments = $productAttachment->getAttachment($productId); ?>  
+                <?php if(count($attachments)){ ?>
+                    <div class="label"><b>Product Artwork File</b></div>
+                    <?php $isSize = $productAttachment->getConfig('productattach/general/attachmentsize'); ?>
+                    <?php foreach ($attachments as $attachment) : ?>
+                        <?php if ($attachment->getActive()) : ?>
+                            <div class="product-attachment" style="margin-bottom: 10px;">
+                                <?php if ($attachment->getFile()) : ?>
+                                    <a href="<?php /* @noEscape */ echo $productAttachment->getAttachmentUrl($attachment->getFile()); ?>" target="_blank" download="attachment">
+                                        <div class="attachment-icon" style="float: left; padding-right: 10px;">
+                                            <img src="<?php /* @noEscape */ echo $productAttachment->getFileIcon($attachment->getFileExt()) ?>" style="width: 20px"/>
+                                        </div>
+                                        <?php /* @noEscape */ echo $attachment->getName(); ?>
+                                    </a>
+                                    <?php if ($isSize) : ?>
+                                        <?php $size = '(Size: '.$productAttachment->getFileSize($attachment->getFile()).')' ?>
+                                        <?php /* @noEscape */ echo __($size); ?>
+                                    <?php endif; ?>
+                                <?php elseif ($attachment->getUrl()) : ?>
+                                    <a href="<?php /* @noEscape */ echo $attachment->getUrl(); ?>" target="_blank" download="attachment">
+                                        <div class="attachment-icon" style="float: left; padding-right: 10px;">
+                                            <img src="<?php /* @noEscape */ echo $productAttachment->getLinkIcon(); ?>" />
+                                        </div>
+                                        <?php /* @noEscape */ echo $attachment->getName(); ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php  } ?>
+            <?php endif; ?>
+        </div>
+
+        <?php /// Product attachement code end ?>
+
+<?php endif; ?>

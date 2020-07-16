@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Backend/etc/menu.xsd">
+    <menu>
+        <add id="lr_pricecalculator::core" title="PriceCalculator" module="LR_PriceCalculator" sortOrder="90" resource="LR_PriceCalculator::sample"/>
+        <add id="lr_pricecalculator::material" title="Materials" module="LR_PriceCalculator" sortOrder="10" parent="lr_pricecalculator::core" action="lr_pricecalculator/items/" resource="LR_PriceCalculator::items"/>
+    </menu>
+</config>

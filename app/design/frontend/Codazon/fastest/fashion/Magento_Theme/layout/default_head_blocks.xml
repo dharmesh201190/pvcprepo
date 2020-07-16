@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+		<css src="https://use.fontawesome.com/releases/v5.4.1/css/all.css" src_type="url" media="all" />
+		<css src="css/fontpeicon/pe-icon-7-stroke.css" media="all" />
+		<css src="css/pvedits.css" media="all" />
+		<css src="css/ssedits.css" media="all" />
+		<css src="css/swatches.css" media="all" />
+		<remove src="Magento_Swatches::css/swatches.css"/>
+    </head>
+</page>

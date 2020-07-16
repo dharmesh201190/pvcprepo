@@ -1,0 +1,14 @@
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        jQuery(document).ready(function () {
+            setTimeout(function () {                 
+                $('.swatch-attribute').each(function () {
+                    var attCode = $(this).attr("attribute-code");                    
+                    $('.'+ attCode + ' .swatch-option').first().trigger('click');
+                });                
+            }, 5000);
+        });
+    });
+</script>

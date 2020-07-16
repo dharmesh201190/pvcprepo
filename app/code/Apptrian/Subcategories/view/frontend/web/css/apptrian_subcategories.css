@@ -1,0 +1,217 @@
+/*!
+ * @category  Apptrian
+ * @package   Apptrian_Subcategories
+ * @author    Apptrian
+ * @copyright Copyright (c) 2017 Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+ 
+.apptrian-subcategories-grid, .apptrian-subcategories-list {
+    clear: both;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: content-box;
+    width: 100%;
+    list-style-type: none;
+    text-align: left;
+}
+
+.apptrian-subcategories-heading {
+    margin: 16px 0;
+}
+
+
+/* bof Grid layout */
+
+.apptrian-subcategories-grid li {
+    display: inline-block;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: content-box;
+    width: 25%;
+    vertical-align: top;
+}
+
+.apptrian-subcategories-grid .apptrian-subcategories-category {
+    display: block;
+    margin: 16px;
+}
+
+.apptrian-subcategories-grid .apptrian-subcategories-category-image img {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+}
+
+.apptrian-subcategories-grid .apptrian-subcategories-category-name {
+    text-align: center;
+}
+
+/* eof Grid layout */
+
+
+/* bof List layout */
+
+.apptrian-subcategories-list li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: content-box;
+    overflow: auto;
+}
+
+.apptrian-subcategories-list .apptrian-subcategories-category {
+    display: block;
+    overflow: auto;
+    margin: 16px;
+}
+
+.apptrian-subcategories-list .apptrian-subcategories-category-image {
+    float: left;
+    width: 20%; /* These percentages must match 1/3 */
+}
+
+.apptrian-subcategories-list .apptrian-subcategories-category-image img {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+}
+
+.apptrian-subcategories-list .apptrian-subcategories-category-name {
+    margin: 0 0 16px 20%; /* These percentages must match 2/3 */
+    padding: 0 0 0 32px;
+}
+
+.apptrian-subcategories-list .apptrian-subcategories-category-description {
+    margin: 0 0 16px 20%; /* These percentages must match 3/3 */
+    padding: 0 0 0 32px;
+}
+
+/* eof List layout */
+
+
+/* bof Media Queries */
+
+/* FYI 
+    - Setting width of li element to: 
+        100%  = 1 per row
+        50%   = 2 per row
+        33.3% = 3 per row
+        25%   = 4 per row
+        20%   = 5 per row
+        etc.
+    - These depend on your site design and you can change them if you like.
+ */
+
+@media only screen and (min-width: 320px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 100%;
+    }
+    
+}
+
+@media only screen and (min-width: 360px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 100%;
+    }
+    
+}
+
+@media only screen and (min-width: 400px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 100%;
+    }
+    
+}
+
+@media only screen and (min-width: 480px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 50%;
+    }
+    
+}
+
+@media only screen and (min-width: 540px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 50%;
+    }
+    
+}
+
+@media only screen and (min-width: 600px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 50%;
+    }
+    
+}
+
+@media only screen and (min-width: 640px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 50%;
+    }
+    
+}
+
+@media only screen and (min-width: 720px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 33.3%;
+    }
+    
+}
+
+@media only screen and (min-width: 768px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 33.3%;
+    }
+    
+}
+
+@media only screen and (min-width: 800px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 33.3%;
+    }
+    
+}
+
+@media only screen and (min-width: 960px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 33.3%;
+    }
+    
+}
+
+@media only screen and (min-width: 1024px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 25%;
+    }
+    
+}
+
+@media only screen and (min-width: 1280px) {
+    
+    .apptrian-subcategories-grid li {
+        width: 25%;
+    }
+    
+}
+
+/* eof Media Queries */

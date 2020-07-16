@@ -1,0 +1,35 @@
+<?php
+/** @var \Prince\Productattach\Block\Attachment $block */
+?>
+<?php $productId = $block->getCurrentId(); ?>
+<?php $attachments = $block->getAttachment($productId); ?>
+<div class="attachments">
+    <div class="title"><?php echo $block->getConfig('productattach/general/tabname'); ?></div>
+    <?php $isSize = $block->getConfig('productattach/general/attachmentsize'); ?>
+    <?php foreach ($attachments as $attachment) : ?>
+        <?php if ($attachment->getActive()) : ?>
+            <div class="product-attachment" style="margin-bottom: 10px;">
+                <?php if ($attachment->getFile()) : ?>
+                    <a href="<?php /* @noEscape */ echo $block->getAttachmentUrl($attachment->getFile()); ?>" target="_blank">
+                        <div class="attachment-icon" style="float: left; padding-right: 10px;">
+                         <img src="<?php /* @noEscape */ echo $block->getFileIcon($attachment->getFileExt()) ?>" style="width: 20px"/>
+                        </div>
+                        <span class="template-name"><?php /* @noEscape */ echo $attachment->getName(); ?></span>
+                    </a>
+                    <?php if ($isSize) : ?>
+                        <?php $size = '(Size: '.$block->getFileSize($attachment->getFile()).')' ?>
+                        <?php /* @noEscape */ echo __($size); ?>
+                    <?php endif; ?>
+                <?php elseif ($attachment->getUrl()) : ?>
+                        <div class="nofile">
+                        <div class="attachment-icon" style="float: left; padding-right: 10px;">
+                            <img src="<?php /* @noEscape */ echo $block->getLinkIcon(); ?>" />
+                        </div>
+                        <!--?php /* @noEscape */ echo $attachment->getName(); ?-->
+                        <?php /* @noEscape */ echo $attachment->getDescription(); ?>
+                        </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>

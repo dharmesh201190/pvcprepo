@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+         <tab id="magecomp" translate="label" sortOrder="100">
+        	<label><![CDATA[<img src="https://www.magecomp.com/media/images/magecomp--extension.png" alt="MAGECOMP" height="25" style="vertical-align:middle;"/>]]></label>
+		</tab>
+        <section id="hideprice" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Hide Price</label>
+            <tab>magecomp</tab>
+            <resource>Magecomp_Hideprice::config_hideprice</resource>
+            <group id="main" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Configuration</label>
+				<field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hide Price</label>
+					<source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+				</field>
+            </group>
+			<group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Hide Price Settings</label>
+				<field id="buttontext" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            		<label>Button Text</label>
+				</field>
+				<field id="customer_groups" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+            		<label>Customer Groups</label>
+            		<source_model>Magecomp\Hideprice\Model\Customergroups</source_model>
+					<comment>Hide Price option will be available to these customer groups only. Select all for All customers</comment>
+            	</field>
+				<field id="cmspage" translate="label comment" type="select" 
+				sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            		<label>Choose Redirect Link</label>
+            		<source_model>Magecomp\Hideprice\Model\Config\Source\Cms</source_model>
+					<depends><field id="restrictions">1</field></depends>
+					<comment>Select CMS page to redirect users on click of Hide Price button.</comment>
+				</field>
+            </group>
+		</section>
+    </system>
+</config>

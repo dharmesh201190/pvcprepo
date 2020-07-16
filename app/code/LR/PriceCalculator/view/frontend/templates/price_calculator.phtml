@@ -1,0 +1,213 @@
+<div id="price-calculator" class="price-calculator">
+	<h2>Price Calculator</h2>
+	<form id="price-calculator-form" name="price-calculator-form" class="price-calculator-form" method="post" data-mage-init='{"validation": {}}' autocomplete="off" action="<?php echo $block->getUrl('pricecalculator/calculateprice/showdetails'); ?>">
+		<div class="field scale">
+			<label>Scale</label>
+			<div class="control">
+				<input type="radio" name="scale" value="meter" id="meter" data-validate="{required:true}"><label for="meter">Meter</label>
+				<input type="radio" name="scale" value="centi-meter" id="centi-meter" data-validate="{required:true}"><label for="centi-meter">Centi Meter</label>
+				<input type="radio" name="scale" value="milli-meter" id="milli-meter" data-validate="{required:true}"><label for="milli-meter">Milli Meter</label>
+				<input type="radio" name="scale" value="feet" id="feet" data-validate="{required:true}"><label for="feet">Feet</label>
+				<input type="radio" name="scale" value="inch" id="inch" data-validate="{required:true}"><label for="inch">Inch</label>
+			</div>
+		</div>
+		<div class="field width-height-qty">
+			<div class="size-field">
+				<label>Width</label>
+				<div class="control">
+					<input type="number" name="width" id="area-width" data-validate="{required:true}">
+					<span id="area-width-scale"></span>
+				</div>
+			</div>
+			<div class="size-field">
+				<label>Height</label>
+				<div class="control">
+					<input type="number" name="height" id="area-height" data-validate="{required:true}">
+					<span id="area-height-scale"></span>
+				</div>
+			</div>
+		</div>
+		<div class="field qty">
+			<label>Qty</label>
+			<select name="qty">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="more">More</option>
+			</select>
+		</div>
+		<div class="field material">
+			<label>Material</label>
+			<select name="material" id="material">
+				<optgroup label="Banner-Grade">
+					<?php foreach($block->getMaterials(0) as $material): ?>
+						<option value="<?php echo $material->getMaterial() ?>"><?php echo $material->getMaterial() ?></option>
+					<?php endforeach; ?>
+				</optgroup>
+				<optgroup label="Point-of-Sale">
+					<?php foreach($block->getMaterials(1) as $material): ?>
+						<option value="<?php echo $material->getMaterial() ?>"><?php echo $material->getMaterial() ?></option>
+					<?php endforeach; ?>
+				</optgroup>
+				<optgroup label="Rigid">
+					<?php foreach($block->getMaterials(2) as $material): ?>
+						<option value="<?php echo $material->getMaterial() ?>"><?php echo $material->getMaterial() ?></option>
+					<?php endforeach; ?>
+				</optgroup>
+				<optgroup label="Fabric">
+					<?php foreach($block->getMaterials(3) as $material): ?>
+						<option value="<?php echo $material->getMaterial() ?>"><?php echo $material->getMaterial() ?></option>
+					<?php endforeach; ?>
+				</optgroup>
+			</select>
+		</div>
+		<div class="field finish">
+			<label>Finish</label>
+			<select name="finish" id="finish">
+				<option value="Hems &amp; Eyelets">Hems &amp; Eyelets</option>
+				<option value="Hems Only">Hems Only</option>
+				<option value="Hemmed with Velcro">Hemmed with Velcro</option>
+				<option value="Pole Pocket(s)">Pole Pocket(s)</option>
+				<option value="Trimmed to Size">Trimmed to Size</option>
+				<option value="Trimmed with Lamination (Gloss)">Trimmed with Lamination (Gloss)</option>
+				<option value="Trimmed with Lamination (Matt)">Trimmed with Lamination (Matt)</option>
+				<option value="Trimmed with Lamination (Dry-Wipe)">Trimmed with Lamination (Dry-Wipe)</option>
+				<option value="Shape Cut">Shape Cut</option>
+				<option value="Shape Cut with Lamination (Gloss)">Shape Cut with Lamination (Gloss)</option>
+				<option value="Shape Cut with Lamination (Matt)">Shape Cut with Lamination (Matt)</option>
+				<option value="Shape Cut with Lamination (Dry-Wipe)">Shape Cut with Lamination (Dry-Wipe)</option>
+				<option value="Trimmed with Eyelets">Trimmed with Eyelets</option>
+				<option value="Trimmed with Overlap">Trimmed with Overlap</option>
+				<option value="Rope &amp; Toggle">Rope &amp; Toggle</option>
+				<option value="Trimmed with Silicone Edging (Kedar)">Trimmed with Silicone Edging (Kedar)</option>
+			</select>
+		</div>
+		<div class="submit">
+			<input class="action primary" type="submit" name="submit" value="Calculate Price">
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        jQuery(document).ready(function() {
+        	var oldUnits = [];
+			$('.price-calculator').on('change','input:radio', function(event) {
+				var width = $('#area-width').val();
+				var height = $('#area-height').val();
+
+				var scale = $(this).val();
+				
+				var areaScale = '';
+				if(scale == 'meter'){
+					areaScale = 'm';
+				} else if(scale == 'milli-meter'){
+					areaScale = 'mm';
+				} else if(scale == 'centi-meter'){
+					areaScale = 'cm';
+				} else if(scale == 'feet'){
+					areaScale = 'ft';
+				} else {
+					areaScale = 'in';
+				}
+				$('#area-width-scale').text(areaScale);
+				$('#area-height-scale').text(areaScale);				
+
+
+				if(oldUnits[0] != scale && (width != '' || height != ''))
+				{					
+					if(oldUnits[0] == 'meter' && scale == 'centi-meter') {
+						var calcWidth = width*100;
+						var calcHeight = height*100;
+					} else if(oldUnits[0] == 'meter' && scale == 'milli-meter') {
+						var calcWidth = width*1000;
+						var calcHeight = height*1000;
+					} else if(oldUnits[0] == 'meter' && scale == 'feet') {
+						var calcWidth = (width*3.281).toFixed(2);
+						var calcHeight = (height*3.281).toFixed(2);
+					} else if(oldUnits[0] == 'meter' && scale == 'inch') {
+						var calcWidth = (width*39.37).toFixed(2);
+						var calcHeight = (height*39.37).toFixed(2);
+					} else if(oldUnits[0] == 'centi-meter' && scale == 'meter') {
+						var calcWidth = width*0.01;
+						var calcHeight = height*0.01;
+					} else if(oldUnits[0] == 'centi-meter' && scale == 'milli-meter') {
+						var calcWidth = width*10;
+						var calcHeight = height*10;
+					} else if(oldUnits[0] == 'centi-meter' && scale == 'feet') {
+						var calcWidth = (width/30.48).toFixed(2);
+						var calcHeight = (height/30.48).toFixed(2);
+					} else if(oldUnits[0] == 'centi-meter' && scale == 'inch') {
+						var calcWidth = (width/2.54).toFixed(2);
+						var calcHeight = (height/2.54).toFixed(2);
+					} else if(oldUnits[0] == 'milli-meter' && scale == 'meter') {
+						var calcWidth = width/1000;
+						var calcHeight = height/1000;
+					} else if(oldUnits[0] == 'milli-meter' && scale == 'centi-meter') {
+						var calcWidth = width/10;
+						var calcHeight = height/10;
+					} else if(oldUnits[0] == 'milli-meter' && scale == 'feet') {
+						var calcWidth = (width/305).toFixed(2);
+						var calcHeight = (height/305).toFixed(2);
+					} else if(oldUnits[0] == 'milli-meter' && scale == 'inch') {
+						var calcWidth = (width/25.4).toFixed(2);
+						var calcHeight = (height/25.4).toFixed(2);
+					} else if(oldUnits[0] == 'feet' && scale == 'meter') {
+						var calcWidth = parseInt((width/3.281)+1);
+						var calcHeight = parseInt((height/3.281)+1);
+					} else if(oldUnits[0] == 'feet' && scale == 'centi-meter') {
+						var calcWidth = parseInt((width*30.48)+1);
+						var calcHeight = parseInt((height*30.48)+1);
+					} else if(oldUnits[0] == 'feet' && scale == 'milli-meter') {
+						var calcWidth = parseInt(width*305);
+						var calcHeight = parseInt((height*305)-1);
+					} else if(oldUnits[0] == 'feet' && scale == 'inch') {
+						var calcWidth = width*12;
+						var calcHeight = height*12;
+					} else if(oldUnits[0] == 'inch' && scale == 'meter') {
+						var calcWidth = parseInt(width/39.37);
+						var calcHeight = parseInt(height/39.37);
+					} else if(oldUnits[0] == 'inch' && scale == 'centi-meter') {
+						var calcWidth = parseInt((width*2.54)+1);
+						var calcHeight = parseInt((height*2.54)+1);
+					} else if(oldUnits[0] == 'inch' && scale == 'milli-meter') {
+						var calcWidth = parseInt((width*25.4)+1);
+						var calcHeight = parseInt((height*25.4)+1);
+					} else if(oldUnits[0] == 'inch' && scale == 'feet') {
+						var calcWidth = (width/12).toFixed(2);
+						var calcHeight = (height/12).toFixed(2);
+					}
+
+					$('#area-width').val(calcWidth);
+					$('#area-height').val(calcHeight);
+				}
+
+				oldUnits.length = 0;
+				oldUnits.push($(this).val());
+
+            });  
+			$('.price-calculator').on('change','#material', function(event) {
+				jQuery.ajax({
+                    url: '<?php echo $block->getUrl("pricecalculator/calculateprice/getfinish") ?>',
+                    type: 'POST',
+                    data: {
+	                    material: $(this).val(),
+	                },
+                    dataType: 'json',
+                    success: function(response) {
+                    	if(response.test) {
+                    		$("#finish").html(response.test);
+                    	}                 	
+                    }
+                });
+			});
+        });
+    });
+</script>

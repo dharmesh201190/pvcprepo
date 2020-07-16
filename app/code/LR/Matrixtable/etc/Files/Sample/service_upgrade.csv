@@ -1,0 +1,3 @@
+entity_id,sku,shipping_days,shipping_lable,shipping_price,recommended
+,config1,5,Standard turnaround 5 days,55,0
+,config1,7,Economy Turnaround 7 days,45,1

@@ -1,0 +1,16 @@
+{
+    "name": "magecomp/module-hideprice",
+    "description": "Magento Hide Price",
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0"
+    },
+    "type": "magento2-module",
+    "version": "1.0.2",
+     "license": [
+    	"OSL-3.0"
+    ],
+    "autoload": {
+    "psr-4": { "Magecomp\\Hideprice\\": "" },
+    "files": [ "registration.php" ]
+    }
+}

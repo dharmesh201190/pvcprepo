@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>	    
+        <css src="LR_Matrixtable::css/swatchoption.css" />
+    </head>
+    <body>
+    	<referenceBlock name="product.info.options.select">
+    			<action method="setTemplate">
+                    <argument name="template" xsi:type="string">LR_Matrixtable::product/view/options/type/select.phtml</argument>
+                </action>
+    	</referenceBlock>
+    	<referenceBlock name="product.info.options.text">
+    			<action method="setTemplate">
+                    <argument name="template" xsi:type="string">LR_Matrixtable::product/view/options/type/text.phtml</argument>
+                </action>
+    	</referenceBlock>
+    	<referenceBlock name="product.info.options.wrapper">
+    			<action method="setTemplate">
+                    <argument name="template" xsi:type="string">LR_Matrixtable::product/view/options/wrapper.phtml</argument>
+                </action>
+    	</referenceBlock>
+    </body>
+</page>
